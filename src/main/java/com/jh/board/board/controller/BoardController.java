@@ -2,10 +2,14 @@ package com.jh.board.board.controller;
 
 import java.util.List;
 
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.jh.board.board.dto.BoardDetailDto;
+import com.jh.board.board.dto.BoardPagingDto;
 import com.jh.board.board.dto.BoardSaveDto;
 import com.jh.board.board.dto.BoardUpdateDto;
 import com.jh.board.board.service.BoardService;
@@ -31,7 +36,7 @@ public class BoardController {
     private final BoardService boardService;
 
 
-    @GetMapping("/")
+    @GetMapping("")
     public String findAll(Model model){
         // log.info("Board id : {}", model.getAttribute(null));
 
@@ -80,5 +85,16 @@ public class BoardController {
         boardService.update(boardUpdateDto);
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity deleteById(@PathVariable Long boardId){
+        boardService.deleteById(boardId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping
+    public String paging(@PageableDefault(page = 1) Pageable pageable, Model model){
+        Page<BoardPagingDto> boardList = boardService.paging
     }
 }

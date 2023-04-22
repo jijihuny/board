@@ -3,9 +3,15 @@ package com.jh.board.board.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.jh.board.board.common.PagingConst;
 import com.jh.board.board.dto.BoardDetailDto;
+import com.jh.board.board.dto.BoardPagingDto;
 import com.jh.board.board.dto.BoardSaveDto;
 import com.jh.board.board.dto.BoardUpdateDto;
 import com.jh.board.board.entity.BoardEntity;
@@ -47,6 +53,21 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void deleteById(Long boardId){
         boardRepository.deleteById(boardId);
+    }
+
+    @Override
+    public Page<BoardPagingDto> paging(Pageable pageable){
+        Integer page = pageable.getPageNumber() - 1;
+
+        Page<BoardEntity> boardEntities = boardRepository.findAll(PageRequest.of(page, PagingConst.PAGE_LIMIT, Sort.by(Sort.Direction.DESC, "id")));
+
+        return boardEntities.map(
+            board -> BoardPagingDto.builder()
+                        .boardId(board.getId())
+                        .boardWriter(board.getBoardWriter())
+                        .boardTitle(board.getBoardTitle())
+                        .build()
+        );
     }
 }
 
