@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <script src="http://code.jquery.com/jquery-3.6.0.js"></script>
+    <script>
+        const broadUpdate = () => {
+            const id = document.getElementById("boardId").value
+            const writer = doucument.getElementById("boardWriter").value
+            const title = document.getElementById("boardTitle").value
+            const contents = document.getElementById("boardContnets").value
+            const inputPassword = $("#boardPassword").val();
+            const password = "[[${boardDetatilDto.boardPassword}]]"
+            const updateDate = JSON.stringify({
+                boardId : id,
+                boardWriter : writer,
+                boardTitle : title,
+                boardContents : contents,
+                boardPassword : password
+            })
+
+            console.log(updateDate)
+
+            const reqUrl = "/board" + id
+
+            if(inputPassword == password){
+                $.ajax({
+                    type : "put",
+                    url : reqUrl,
+                    contentType : "application/json",
+                    data : updateDate,
+                    success : () => {
+                        location.href = "/board/" + id;
+                    },
+                    error : () => {
+                        alert("failed to update");
+                    }
+                })
+            }
+            else{
+                alert("Invalid password.");
+            }
+        }
+
+        const boardDelete = () => {
+            const id = document.getElementById("boardId").value
+
+            reqUrl = "/board/"+id
+
+            $.ajax({
+                type : "delete",
+                contentType : "application/json",
+                success : () => {
+                    location.href = "/board/"
+                },
+                error : () => {
+                    alert("failed to delete");
+                }
+            })
+        }
+    </script>
+    <body>
+        <h2>update.html</h2>
+        <form action="/board/update" method="post" name="updateForm">
+            <input type="text" id="boardId" name="boardId" th:value="${boardDetailDto.boardId}">
+            <input type="text" id="boardWriter" name="boardWriter" th:value="${boardDetailDto.boardWriter}" readonly>
+            <input type="text" id="boardPassword" name="boardPassword" placeholder="Password">
+            <input type="text" id="boardTitle" name="boardTitle" th:value="${boardDetailDto.boardTitle}" placeholder="content">
+            <input type="text" id="boardContents" name="boardContent" th:value="${boardDetailDto.boardContents}">
+            <input type="button" th:onclick="boardUpdate()" value="Edit">
+            <input type="button" th:onclick="boardDelete()" value="delete">
+        </form>
+    </body>
+</html>

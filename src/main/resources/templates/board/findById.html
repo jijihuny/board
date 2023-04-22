@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+
+        <h2>findById.html</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Writer</th>
+                    <th>Title</th>
+                    <th>Contents</th>
+                    <th>CreateTime</th>
+                    <th>UpdateTime</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th th:text="${boardDetailDto.boardId}"></th>
+                    <th th:text="${boardDetailDto.boardWriter}"></th>
+                    <th th:text="${boardDetailDto.boardTitle}"></th>
+                    <th th:text="${boardDetailDto.boardContents}"></th>
+                    <th th:text="${boardDetailDto.createTime}"></th>
+                    <th th:text="${boardDetailDto.updateTime}"></th>
+                    <th><a th:href="@{|/board/update/${boardDetailDto.boardId}}|">edit</a></th>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+
+</html>

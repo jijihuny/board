@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>findAll.html</title>
+    </head>
+
+    <!-- <script src="http://code.jquery.com/jquery-3.6.0.js"></script>
+    <script>
+        const detail = (boardId) => {
+            console.log(boardId)
+            const reqUrl = '/board/' + boardId
+
+            $.ajax({
+                type : "get",
+                url : reqUrl,
+                contentType : "application/json",
+                success : (result) => {
+                    console.log(result)
+                    
+                }
+            })
+        }
+    </script> -->
+    <body>
+        <h2>findAll.html</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Writer</th>
+                    <th>Title</th>
+                    <th>CreateTime</th>
+                    <th>UpdateTime</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="board:${boardList}">
+                    <td th:text="${board.boardId}"></td>
+                    <td th:text="${board.boardWriter}"></td>
+                    <td>
+                        <a th:href="@{|/board/${board.boardId}|}">
+                            <span th:text="${board.boardTitle}"></span>
+                        </a>
+                    </td>
+                    <td th:text="${board.createTime}"></td>
+                    <td th:text="${board.updateTime}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
